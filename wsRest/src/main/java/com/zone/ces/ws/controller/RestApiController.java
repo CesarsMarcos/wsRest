@@ -55,7 +55,6 @@ public class RestApiController {
 		}
 	return  new ResponseEntity<User> (user,HttpStatus.OK);
 	}
-	
 		//RECUPERAR USUARIO POR ID
 	
 		//AGREGAR USUARIO
@@ -63,7 +62,7 @@ public class RestApiController {
 	public ResponseEntity<?> createUser(@RequestBody User user, UriComponentsBuilder ucBuilder){
 		logger.info("CREAR USUARIO",user);
 		if(userService.isUserExist(user)){
-			logger.error("El usuario existe ",user.getNombre());
+			logger.error("EL USUARIO YA EXISTE",user.getNombre());
 			return new ResponseEntity<>(new CustomerErrorType("No se puede registrar el usuario "+user.getNombre()+"ya existe"),HttpStatus.CONFLICT);
 		}
 		userService.addUser(user);
@@ -76,7 +75,7 @@ public class RestApiController {
 		//MODIFICAR USUARIO
 	@RequestMapping(value="/user/{id}",method=RequestMethod.PUT)
 	public ResponseEntity<?> updateUser(@PathVariable("id") Long id,@RequestBody User user){
-		logger.info("ACTUALZIAR USUARIO", id);
+		logger.info("ACTUALIZAR USUARIO", id);
 		User currentUSer =userService.getUserById(id);
 		
 		if(currentUSer ==null){
@@ -85,7 +84,7 @@ public class RestApiController {
 		}
 		currentUSer.setNombre(user.getNombre());
 		currentUSer.setEdad(user.getEdad());
-		userService.addUser(currentUSer);
+		userService.updateUser(currentUSer);
 		return new ResponseEntity<User>(currentUSer,HttpStatus.OK);
 	}
 		//MODIFICAR USUARIO
