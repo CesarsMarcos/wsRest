@@ -40,9 +40,9 @@ public class RestApiController {
 		return new ResponseEntity<List<User>>(users,HttpStatus.OK);
 	}
 	
-	//RECUPERAR USUARIO POR ID
+		//RECUPERAR USUARIO POR ID
 	@RequestMapping(value="/user/{id}",method=RequestMethod.GET)
-	public ResponseEntity<?> getUser(@PathVariable("id") long id){
+	public ResponseEntity<?> getUser(@PathVariable("id") int id){
 		logger.info("User id {}",id);
 		//User user = userService.findById(id);
 		User user = userService.findById(id).get();
@@ -52,6 +52,7 @@ public class RestApiController {
 		}
 	return  new ResponseEntity<User> (user,HttpStatus.OK);
 	}
+		//RECUPERAR USUARIO POR ID
 	
 	//AGREGAR USUARIO
 	@RequestMapping(value="/user/",method=RequestMethod.POST)
@@ -73,7 +74,7 @@ public class RestApiController {
 	
 	//MODIFICAR USUARIO
 	@RequestMapping(value="/user/{id}",method=RequestMethod.PUT)
-	public ResponseEntity<?> updateUser(@PathVariable("id") long id,@RequestBody User user){
+	public ResponseEntity<?> updateUser(@PathVariable("id") int id,@RequestBody User user){
 		logger.info("ACTUALZIAR USUARIO", id);
 		//User currentUSer =userService.findById(id);
 		User currentUSer =userService.findById(id).get();
@@ -94,7 +95,7 @@ public class RestApiController {
 	
 	//DELETE USUARIO
 	@RequestMapping(value="/user/{id}",method=RequestMethod.DELETE)
-	public ResponseEntity<?> deleteUser(@PathVariable("id") long id){	
+	public ResponseEntity<?> deleteUser(@PathVariable("id") int id){	
 		logger.info("ELIMINAR EL USUARIO ",id);
 		
 		User user = userService.findById(id).get();

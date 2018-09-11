@@ -21,29 +21,37 @@ public class User {
 	
 	@Column(name="edad")
 	private Integer edad;
-	
-	
+
 	public Integer getId() {
 		return id;
 	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
 	public String getNombre() {
 		return nombre;
 	}
+
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+
 	public Integer getEdad() {
 		return edad;
 	}
+
 	public void setEdad(Integer edad) {
 		this.edad = edad;
 	}
-	
-	
-	
-	
 
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", nombre=" + nombre + ", edad=" + edad + "]";
+	}
+
+	
+	
+	
 }
