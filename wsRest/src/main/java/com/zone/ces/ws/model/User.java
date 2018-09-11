@@ -1,6 +1,9 @@
 package com.zone.ces.ws.model;
 
 import javax.persistence.Entity;
+
+import java.io.Serializable;
+
 import javax.persistence.*;
 
 import lombok.Data;
@@ -9,12 +12,12 @@ import lombok.Data;
 @Entity
 @Table(name="usuario")
 
-public class User {
-	
+public class User implements Serializable {
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy= GenerationType.AUTO)
 	@Column(name="id_usuario")
-	private Integer id;
+	private Long id;
 	
 	@Column(name="nombre")
 	private String nombre;
@@ -22,11 +25,11 @@ public class User {
 	@Column(name="edad")
 	private Integer edad;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -46,12 +49,11 @@ public class User {
 		this.edad = edad;
 	}
 
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", nombre=" + nombre + ", edad=" + edad + "]";
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
-	
+
 	
 	
 }

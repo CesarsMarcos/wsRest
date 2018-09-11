@@ -17,7 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.zone.ces.ws.util.CustomerErrorType;
 import com.zone.ces.ws.model.User;
-import com.zone.ces.ws.repository.UserRepository;
+import com.zone.ces.ws.service.IUserService;
 
 
 @RestController
@@ -27,83 +27,80 @@ public class RestApiController {
 	public static final Logger logger = LoggerFactory.getLogger(RestApiController.class);
 	
 	@Autowired
-	UserRepository userService;
+	private IUserService userService;
 	
-	//
+		//LISTA DE USUARIOS
 	@RequestMapping(value="/user/",method=RequestMethod.GET)
 	public ResponseEntity<List<User>> listAllUsers(){
-		logger.info("LSITA DE USUARIOS");
-		List<User> users = userService.findAll();
-		if(users.isEmpty()){
+		logger.info("LISTA DE USUARIOS");
+		//List<User> users = userService.findAll();
+		List<User> user = userService.getAllUSer();
+		if(user.isEmpty()){
+			logger.info("NO SE ENCONTRARON USUARIOS");
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
-		return new ResponseEntity<List<User>>(users,HttpStatus.OK);
+		return new ResponseEntity<List<User>>(user,HttpStatus.OK);
 	}
+		//LISTA DE USUARIOS
+	
 	
 		//RECUPERAR USUARIO POR ID
 	@RequestMapping(value="/user/{id}",method=RequestMethod.GET)
-	public ResponseEntity<?> getUser(@PathVariable("id") int id){
+	public ResponseEntity<?> getUser(@PathVariable("id") Long id){
 		logger.info("User id {}",id);
-		//User user = userService.findById(id);
-		User user = userService.findById(id).get();
+		User user = userService.getUserById(id);
 		if(user==null){
 			logger.error("Usuario no encontrado",id);
 			return new ResponseEntity<>(new CustomerErrorType("EL CODIGO "+id+ " NO FUE ENCONTRADO"),HttpStatus.NOT_FOUND);
 		}
 	return  new ResponseEntity<User> (user,HttpStatus.OK);
 	}
+	
 		//RECUPERAR USUARIO POR ID
 	
-	//AGREGAR USUARIO
+		//AGREGAR USUARIO
 	@RequestMapping(value="/user/",method=RequestMethod.POST)
 	public ResponseEntity<?> createUser(@RequestBody User user, UriComponentsBuilder ucBuilder){
 		logger.info("CREAR USUARIO",user);
-		//if(userService.isUserExist(user)){
-		/*
 		if(userService.isUserExist(user)){
 			logger.error("El usuario existe ",user.getNombre());
 			return new ResponseEntity<>(new CustomerErrorType("No se puede registrar el usuario "+user.getNombre()+"ya existe"),HttpStatus.CONFLICT);
 		}
-		*/
-		userService.save(user);
+		userService.addUser(user);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setLocation(ucBuilder.path("/api/user/{id}").buildAndExpand(user.getId()).toUri());
-		return new ResponseEntity<String>(headers,HttpStatus.CREATED);
+		return new ResponseEntity<>(headers,HttpStatus.CREATED);
 	}
+		//AGREGAR USUARIO
 	
-	
-	//MODIFICAR USUARIO
+		//MODIFICAR USUARIO
 	@RequestMapping(value="/user/{id}",method=RequestMethod.PUT)
-	public ResponseEntity<?> updateUser(@PathVariable("id") int id,@RequestBody User user){
+	public ResponseEntity<?> updateUser(@PathVariable("id") Long id,@RequestBody User user){
 		logger.info("ACTUALZIAR USUARIO", id);
-		//User currentUSer =userService.findById(id);
-		User currentUSer =userService.findById(id).get();
+		User currentUSer =userService.getUserById(id);
 		
 		if(currentUSer ==null){
 			logger.error("EL CODIGO NO EXISTE",id);
 			return new ResponseEntity<>(new CustomerErrorType("NO SE PUEDE ACTUALIAR EL CODIGO "+id+ "NO EXISTE"),HttpStatus.NOT_FOUND);
 		}
-		
-		currentUSer.setNombre(user.getNombre());
 		currentUSer.setNombre(user.getNombre());
 		currentUSer.setEdad(user.getEdad());
-		
-		userService.save(currentUSer);
+		userService.addUser(currentUSer);
 		return new ResponseEntity<User>(currentUSer,HttpStatus.OK);
-
 	}
+		//MODIFICAR USUARIO
 	
 	//DELETE USUARIO
 	@RequestMapping(value="/user/{id}",method=RequestMethod.DELETE)
-	public ResponseEntity<?> deleteUser(@PathVariable("id") int id){	
+	public ResponseEntity<?> deleteUser(@PathVariable("id") Long id){	
 		logger.info("ELIMINAR EL USUARIO ",id);
 		
-		User user = userService.findById(id).get();
+		User user = userService.getUserById(id);
 		if(user ==null){
 			logger.error("EL CODIGO NO EXISTE",id);
 			return new ResponseEntity<>(new CustomerErrorType("NO SE PUEDE ELIMIANAR EL CODIGO "+id+ "NO EXISTE"),HttpStatus.NOT_FOUND);
 		}
-		userService.deleteById(id);
+		userService.deleteUser(id);
 		return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
 	}
 	
@@ -111,7 +108,7 @@ public class RestApiController {
 	
 	public ResponseEntity<User> deteleAllUser(){
 		logger.info("ELIMINAR TODOS LOS USUARIOS");
-		userService.deleteAll();
+		userService.deleteUserAll();
 		return new  ResponseEntity<User>(HttpStatus.NO_CONTENT);
 	}
 	
