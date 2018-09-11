@@ -1,15 +1,14 @@
-package com.zone.ces.repository;
+package com.zone.ces.ws.repository;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 
-import com.zone.ces.model.User;
+import com.zone.ces.ws.model.User;
 
 @Repository("userRepository")
 public interface UserRepository extends JpaRepository<User, Long>{
 	
 
-	
 }

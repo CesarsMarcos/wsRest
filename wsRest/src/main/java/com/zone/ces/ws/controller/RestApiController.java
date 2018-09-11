@@ -1,4 +1,4 @@
-package com.zone.ces.controller;
+package com.zone.ces.ws.controller;
 
 import java.util.List;
 
@@ -15,9 +15,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.zone.ces.util.CustomerErrorType;
-import com.zone.ces.model.User;
-import com.zone.ces.repository.UserRepository;
+import com.zone.ces.ws.util.CustomerErrorType;
+import com.zone.ces.ws.model.User;
+import com.zone.ces.ws.repository.UserRepository;
+
 
 @RestController
 @RequestMapping("/testapi")
@@ -31,7 +32,7 @@ public class RestApiController {
 	//
 	@RequestMapping(value="/user/",method=RequestMethod.GET)
 	public ResponseEntity<List<User>> listAllUsers(){
-		
+		logger.info("LSITA DE USUARIOS");
 		List<User> users = userService.findAll();
 		if(users.isEmpty()){
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);

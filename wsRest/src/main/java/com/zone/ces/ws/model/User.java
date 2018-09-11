@@ -1,4 +1,4 @@
-package com.zone.ces.model;
+package com.zone.ces.ws.model;
 
 import javax.persistence.Entity;
 import javax.persistence.*;

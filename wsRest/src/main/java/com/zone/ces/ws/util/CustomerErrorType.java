@@ -1,4 +1,4 @@
-package com.zone.ces.util;
+package com.zone.ces.ws.util;
 
 public class CustomerErrorType {
 	
