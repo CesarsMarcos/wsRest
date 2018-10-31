@@ -29,7 +29,9 @@ public class UserService  implements IUserService{
 	public User getUserById(Long id) {
 		// TODO Auto-generated method stub
 		User user = userRepository.findById(id).get();
-		return user;
+		System.out.println("LO QUE DEVUELVE EL USUARIO"+ user);
+			return user;
+					
 	}
 
 	@Override

@@ -45,18 +45,20 @@ public class RestApiController {
 	
 	
 		//RECUPERAR USUARIO POR ID
+	
 	@RequestMapping(value="/user/{id}",method=RequestMethod.GET)
 	public ResponseEntity<?> getUser(@PathVariable("id") Long id){
 		logger.info("User id {}",id);
 		User user = userService.getUserById(id);
-		if(user==null){
+		logger.info("LO QUE TRAE ",user);
+		if(user.getNombre() ==null){
 			logger.error("Usuario no encontrado",id);
 			return new ResponseEntity<>(new CustomerErrorType("EL CODIGO "+id+ " NO FUE ENCONTRADO"),HttpStatus.NOT_FOUND);
+		}else{
+			return  new ResponseEntity<User> (user,HttpStatus.OK);	
 		}
-	return  new ResponseEntity<User> (user,HttpStatus.OK);
 	}
 		//RECUPERAR USUARIO POR ID
-	
 		//AGREGAR USUARIO
 	@RequestMapping(value="/user/",method=RequestMethod.POST)
 	public ResponseEntity<?> createUser(@RequestBody User user, UriComponentsBuilder ucBuilder){
@@ -97,7 +99,7 @@ public class RestApiController {
 		User user = userService.getUserById(id);
 		if(user ==null){
 			logger.error("EL CODIGO NO EXISTE",id);
-			return new ResponseEntity<>(new CustomerErrorType("NO SE PUEDE ELIMIANAR EL CODIGO "+id+ "NO EXISTE"),HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(new CustomerErrorType("NO SE PUEDE ELIMINAR EL CODIGO "+id+ "NO EXISTE"),HttpStatus.NOT_FOUND);
 		}
 		userService.deleteUser(id);
 		return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
